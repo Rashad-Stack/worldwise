@@ -1,19 +1,17 @@
+import type { City } from "@/types";
 import styles from "./CountryItem.module.css";
 
-interface Country {
-  emoji: string;
-  country: string;
-}
-
 type props = {
-  country: Country;
+  country: City;
 };
 
-export default function CountryItem({ country }: props) {
+export default function CountryItem({ country: countries }: props) {
+  const { emoji, country } = countries || {};
+
   return (
     <li className={styles.countryItem}>
-      <span>{country.emoji}</span>
-      <span>{country.country}</span>
+      <span>{emoji}</span>
+      <span>{country}</span>
     </li>
   );
 }

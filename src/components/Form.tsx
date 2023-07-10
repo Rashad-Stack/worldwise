@@ -3,6 +3,8 @@
 import { useState } from "react";
 
 import styles from "./Form.module.css";
+import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 type State = {
   cityName: string;
@@ -22,7 +24,7 @@ const initialState: State = {
 
 export default function Form() {
   const [state, setState] = useState<State>(initialState);
-
+  const navigate = useNavigate();
   const handleChanged = (e: Event) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
@@ -62,7 +64,14 @@ export default function Form() {
 
       <div className={styles.buttons}>
         <button>Add</button>
-        <button>&larr; Back</button>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+          type="back">
+          &larr; Back
+        </Button>
       </div>
     </form>
   );

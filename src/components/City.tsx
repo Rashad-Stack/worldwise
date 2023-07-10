@@ -1,21 +1,10 @@
 import type { City } from "@/types";
 import styles from "./City.module.css";
-
-const formatDate = (date: string | null): string | null => {
-  if (date) {
-    return new Intl.DateTimeFormat("en", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      weekday: "long",
-    }).format(new Date(date));
-  }
-  return null;
-};
+import formateDate from "@/utils/formatDate";
 
 export default function City() {
   // TEMP DATA
-  const currentCity: City = {
+  const currentCity = {
     cityName: "Lisbon",
     emoji: "🇵🇹",
     date: "2027-10-31T15:59:59.138Z",
@@ -35,7 +24,7 @@ export default function City() {
 
       <div className={styles.row}>
         <h6>You went to {cityName} on</h6>
-        <p>{formatDate(date || null)}</p>
+        <p>{formateDate(date)}</p>
       </div>
 
       {notes && (
