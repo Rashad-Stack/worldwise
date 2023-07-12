@@ -9,8 +9,14 @@ type Props = {
 };
 
 export default function CityItem({ city }: Props) {
-  const { current } = useCities();
+  const { deleteCity, current } = useCities();
+
   const { id, cityName, emoji, date, position } = city || {};
+
+  function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    deleteCity(Number(id));
+  }
   return (
     <li>
       <Link
@@ -21,7 +27,12 @@ export default function CityItem({ city }: Props) {
         <span className={styles.emoji}>{emoji}</span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>{formateDate(date)}</time>
-        <button className={styles.deleteBtn}>&times;</button>
+        <button
+          type="button"
+          className={styles.deleteBtn}
+          onClick={handleDelete}>
+          &times;
+        </button>
       </Link>
     </li>
   );

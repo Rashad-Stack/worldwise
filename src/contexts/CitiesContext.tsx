@@ -12,6 +12,7 @@ type CitiesType = {
   getCity(id: number): void;
   current: City | undefined;
   addNewCity(city: City): void;
+  deleteCity(id: number): void;
 };
 
 const BASE_URL = "http://localhost:9000";
@@ -22,6 +23,7 @@ export const CitiesContext = createContext<CitiesType>({
   getCity: () => ({}),
   current: undefined,
   addNewCity: () => ({}),
+  deleteCity: () => ({}),
 });
 
 export default function CitiesProvider({ children }: Props) {
@@ -78,9 +80,24 @@ export default function CitiesProvider({ children }: Props) {
     }
   }
 
+  async function deleteCity(id: number) {
+    setIsLoading(true);
+    try {
+      await fetch(`${BASE_URL}/cities/${id}`, {
+        method: "DELETE",
+      });
+
+      setCities((cities) => cities.filter((city) => city.id !== id));
+    } catch {
+      alert("There was ana error loading data...");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <CitiesContext.Provider
-      value={{ cities, getCity, addNewCity, current, isLoading }}>
+      value={{ cities, getCity, addNewCity, deleteCity, current, isLoading }}>
       {children}
     </CitiesContext.Provider>
   );
