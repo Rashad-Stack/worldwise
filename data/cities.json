@@ -1,3 +1,28 @@
 {
-  "cities": []
+  "cities": [
+    {
+      "cityName": "Timbuktu",
+      "country": "Mali",
+      "date": "2023-07-12T17:39:23.314Z",
+      "notes": "",
+      "emoji": "🇲🇱",
+      "position": {
+        "lat": 17.155103260273098,
+        "lng": -2.2830865393565496
+      },
+      "id": 1
+    },
+    {
+      "cityName": "Kolondieba",
+      "country": "Mali",
+      "date": "2023-07-12T17:39:23.314Z",
+      "notes": "",
+      "emoji": "🇲🇱",
+      "position": {
+        "lat": 10.914595599998737,
+        "lng": -7.054949455651171
+      },
+      "id": 2
+    }
+  ]
 }

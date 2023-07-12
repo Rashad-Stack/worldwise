@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./Map.module.css";
 import {
   MapContainer,
@@ -66,7 +66,7 @@ export default function Map() {
             key={city.id}
             position={[city.position.lat, city.position.lng]}>
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              <span>{city.emoji}</span> <span>{city.cityName}</span>
             </Popup>
           </Marker>
         ))}

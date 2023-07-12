@@ -77,6 +77,10 @@ export default function Form() {
             cityName: data.city || data.locality || "",
             country: data.countryName,
             emoji: convertToEmoji(data.countryCode),
+            position: {
+              lat: data.latitude,
+              lng: data.longitude,
+            },
           }));
         } catch (error: unknown) {
           if (error instanceof Error) {
@@ -98,6 +102,7 @@ export default function Form() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     if (!inputState.cityName || !inputState.date) return;
     await addNewCity(inputState);
     navigate("/app/cities");

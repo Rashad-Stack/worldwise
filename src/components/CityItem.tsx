@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function CityItem({ city }: Props) {
-  const { deleteCity, current } = useCities();
+  const { deleteCity, currentCity } = useCities();
 
   const { id, cityName, emoji, date, position } = city || {};
 
@@ -22,7 +22,7 @@ export default function CityItem({ city }: Props) {
       <Link
         to={`${id}?lat=${position.lat}&lng=${position.lng}`}
         className={`${styles.cityItem} ${
-          id === current?.id ? styles["cityItem--active"] : ""
+          id === currentCity?.id ? styles["cityItem--active"] : ""
         }`}>
         <span className={styles.emoji}>{emoji}</span>
         <h3 className={styles.name}>{cityName}</h3>
