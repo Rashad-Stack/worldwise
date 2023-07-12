@@ -11,6 +11,7 @@ type CitiesType = {
   isLoading: boolean;
   getCity(id: number): void;
   current: City | undefined;
+  addNewCity(city: City): void;
 };
 
 const BASE_URL = "http://localhost:9000";
@@ -20,6 +21,7 @@ export const CitiesContext = createContext<CitiesType>({
   isLoading: false,
   getCity: () => ({}),
   current: undefined,
+  addNewCity: () => ({}),
 });
 
 export default function CitiesProvider({ children }: Props) {
@@ -57,8 +59,28 @@ export default function CitiesProvider({ children }: Props) {
     }
   }
 
+  async function addNewCity(city: City) {
+    setIsLoading(true);
+    try {
+      const res = await fetch(`${BASE_URL}/cities`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(city),
+      });
+      const data = await res.json();
+      setCities((cities) => [...cities, data]);
+    } catch {
+      alert("There was ana error loading data...");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
-    <CitiesContext.Provider value={{ cities, getCity, current, isLoading }}>
+    <CitiesContext.Provider
+      value={{ cities, getCity, addNewCity, current, isLoading }}>
       {children}
     </CitiesContext.Provider>
   );

@@ -4,11 +4,11 @@ export type Position = {
 };
 
 export type City = {
-  readonly id: number;
+  readonly id?: number;
   cityName: string;
   country: string;
   emoji: string;
-  date: string;
+  date: date;
   notes: string;
   position: Position;
 };
