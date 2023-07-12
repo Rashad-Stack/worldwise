@@ -1,4 +1,5 @@
-export default function formateDate(date: string): string {
+export default function formateDate(date: string | undefined): string {
+  if (!date) return "Date not found";
   return new Intl.DateTimeFormat("en", {
     day: "numeric",
     month: "long",

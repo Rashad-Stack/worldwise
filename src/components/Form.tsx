@@ -1,36 +1,101 @@
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import styles from "./Form.module.css";
-import { useNavigate } from "react-router-dom";
-import Button from "./Button";
+import BackButton from "./BackButton";
+import useUrlPosition from "@/hooks/useUrlPosition";
+import { convertToEmoji } from "@/utils/ConvertToEmoji";
+import Message from "./Message";
+import Spinner from "./Spinner";
 
 type State = {
+  isLoading: boolean;
+  error: string | null | unknown;
   cityName: string;
   country: string;
   date: string;
   notes: string;
+  emoji: string;
 };
 
 type Event = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 const initialState: State = {
+  isLoading: false,
+  error: null,
   cityName: "",
   country: "",
-  date: "",
+  date: new Date().toDateString(),
   notes: "",
+  emoji: "",
 };
+
+const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
 export default function Form() {
   const [state, setState] = useState<State>(initialState);
-  const navigate = useNavigate();
+  const { lat, lng } = useUrlPosition();
+
   const handleChanged = (e: Event) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
+  useEffect(
+    function () {
+      if (!lat && !lng) return;
+      async function fetchCities() {
+        setState((prev) => ({ ...prev, isLoading: true, error: null }));
+        try {
+          const res = await fetch(
+            `${BASE_URL}?latitude=${lat}&longitude=${lng}`
+          );
+          const data = await res.json();
+
+          if (!data.countryCode) {
+            throw new Error(
+              "That doesn't seems to be a city, click some where else 😉"
+            );
+          }
+          setState((prev) => ({
+            ...prev,
+            cityName: data.city || data.locality || "",
+            country: data.countryName,
+            emoji: convertToEmoji(data.countryCode),
+          }));
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setState((prev) => ({ ...prev, error }));
+          } else {
+            setState((prev) => ({
+              ...prev,
+              error: "An unknown error occurred. Please try again.",
+            }));
+          }
+        } finally {
+          setState((prev) => ({ ...prev, isLoading: false }));
+        }
+      }
+      fetchCities();
+    },
+    [lat, lng]
+  );
+
+  function handleSubmit(event: Event) {
+    event.preventDefault();
+  }
+
+  if (!lat && !lng)
+    return (
+      <Message message="Add your first city by clicking on a city on the map" />
+    );
+
+  if (state.isLoading) return <Spinner />;
+
+  if (state.error) return <Message message={state.error.toString()} />;
+
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input
@@ -39,7 +104,7 @@ export default function Form() {
           onChange={handleChanged}
           value={state.cityName}
         />
-        {/* <span className={styles.flag}>{emoji}</span> */}
+        <span className={styles.flag}>{state.emoji}</span>
       </div>
 
       <div className={styles.row}>
@@ -63,15 +128,8 @@ export default function Form() {
       </div>
 
       <div className={styles.buttons}>
-        <button>Add</button>
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(-1);
-          }}
-          type="back">
-          &larr; Back
-        </Button>
+        <button type="submit">Add</button>
+        <BackButton />
       </div>
     </form>
   );

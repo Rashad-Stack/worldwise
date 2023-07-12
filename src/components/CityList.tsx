@@ -1,16 +1,13 @@
-import type { City } from "@/types";
 import styles from "./CityList.module.css";
 import Spinner from "./Spinner";
 import CityItem from "./CityItem";
 import Message from "./Message";
+import { useCities } from "@/hooks/useCities";
 
-type Props = {
-  cities: City[];
-  loading: boolean;
-};
+export default function CityList(): JSX.Element {
+  const { cities, isLoading } = useCities();
 
-export default function CityList({ cities, loading }: Props): JSX.Element {
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
   if (!cities.length)
     return (
       <Message message="Add your first city by clicking on a city on the map" />
