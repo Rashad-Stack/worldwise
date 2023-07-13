@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
 import styles from "./PageNave.module.css";
 import Logo from "./Logo";
+import { useAuth } from "@/hooks/useAuth";
+import Button from "./Button";
 export default function PageNav() {
+  const { isAuthenticated, logout } = useAuth();
   return (
     <nav className={styles.nav}>
       <Logo />
@@ -16,9 +19,15 @@ export default function PageNav() {
           <NavLink to="/pricing">Pricing</NavLink>
         </li>
         <li>
-          <NavLink to="/login" className={styles.ctaLink}>
-            Login
-          </NavLink>
+          {isAuthenticated ? (
+            <Button type="primary" onClick={logout}>
+              Logout
+            </Button>
+          ) : (
+            <NavLink to="/login" className={styles.ctaLink}>
+              Login
+            </NavLink>
+          )}
         </li>
       </ul>
     </nav>
