@@ -8,7 +8,7 @@ import Spinner from "./Spinner";
 import BackButton from "./BackButton";
 
 export default function City() {
-  const { getCity, current, isLoading } = useCities();
+  const { getCity, currentCity, isLoading } = useCities();
 
   const { id } = useParams();
 
@@ -24,29 +24,29 @@ export default function City() {
       <div className={styles.row}>
         <h6>City name</h6>
         <h3>
-          <span>{current?.emoji}</span> {current?.cityName}
+          <span>{currentCity?.emoji}</span> {currentCity?.cityName}
         </h3>
       </div>
 
       <div className={styles.row}>
-        <h6>You went to {current?.cityName} on</h6>
-        <p>{formateDate(current?.date)}</p>
+        <h6>You went to {currentCity?.cityName} on</h6>
+        <p>{formateDate(currentCity?.date)}</p>
       </div>
 
-      {current?.notes && (
+      {currentCity?.notes && (
         <div className={styles.row}>
           <h6>Your notes</h6>
-          <p>{current?.notes}</p>
+          <p>{currentCity?.notes}</p>
         </div>
       )}
 
       <div className={styles.row}>
         <h6>Learn more</h6>
         <a
-          href={`https://en.wikipedia.org/wiki/${current?.cityName}`}
+          href={`https://en.wikipedia.org/wiki/${currentCity?.cityName}`}
           target="_blank"
           rel="noreferrer">
-          Check out {current?.cityName} on Wikipedia &rarr;
+          Check out {currentCity?.cityName} on Wikipedia &rarr;
         </a>
       </div>
       <div>
