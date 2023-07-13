@@ -45,7 +45,7 @@ type ContextType = {
   deleteCity(id: number): Promise<void>;
 };
 
-const BASE_URL = "http://localhost:9000";
+const BASE_URL = "https://caring-piquant-son.glitch.me";
 
 export const CitiesContext = createContext<ContextType | undefined>(undefined);
 
